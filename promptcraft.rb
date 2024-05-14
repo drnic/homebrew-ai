@@ -1,17 +1,20 @@
 class Promptcraft < Formula
   desc "Try out new system prompts on your existing AI conversations. Over and over until you're happy."
   homepage "https://github.com/drnic/promptcraft"
-  version "0.1.1"
-  url "https://github.com/drnic/promptcraft/releases/download/v0.1.1/promptcraft-0.1.1.tar.xz"
-  sha256 "e932cde5d7af5f7dbd0a35dc31264787566741acd394c7488e2abd419d4cbab4"
+  version "0.1.2"
+  url "https://github.com/drnic/promptcraft/releases/download/v0.1.2/promptcraft-0.1.2.tar.xz"
+  sha256 "7b65c0e1e990b70accf17095d9fec3a6db069f8be49053c1478012e247f0f12e"
 
-  depends_on "ruby@3.3"
+  depends_on "ruby"
 
   def install
+    ENV["GEM_HOME"] = libexec
+
     # Extract all files to libexec, which is a common Homebrew practice for third-party tools
     libexec.install Dir["*"]
-    # Create a symbolic link for the executable in Homebrew's bin directory
-    bin.install_symlink "#{libexec}/exe/promptcraft" => "promptcraft"
+
+    bin.install libexec/"exe/promptcraft"
+    bin.env_script_all_files(libexec/"bin", GEM_HOME: ENV.fetch("GEM_HOME"))
   end
 
   test do
